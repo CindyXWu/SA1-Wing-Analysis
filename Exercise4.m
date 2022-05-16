@@ -21,17 +21,27 @@ for i=1:nx
         xm(i,j)= xmin + (i-1)*(xmax-xmin)/(nx-1);
         ym(i,j)= ymin + (j-1)*(ymax-ymin)/(ny-1);
         for k=0:np-1
-           xs_k = cos(theta(k+1));
-           ys_k = sin(theta(k+1));
-           xs_k1 = cos(theta(k+2));
-           ys_k1 = sin(theta(k+2));
+            %k is loop over all panels
+           xs(k+1) = cos(theta(k+1));
+           ys(k+1) = sin(theta(k+1));
+           xs(k+2) = cos(theta(k+2));
+           ys(k+2) = sin(theta(k+2));
            gamma_k = -2*sin(theta(k+1));
            gamma_k1 = -2*sin(theta(k+2));
-           [fa,fb]= panelinf(xs_k,ys_k,xs_k1,ys_k1,xm(i,j),ym(i,j));
+           [fa,fb]= panelinf(xs(k+1),ys(k+1),xs(k+2),ys(k+2),xm(i,j),ym(i,j));
            psi(i,j) = psi(i,j)+gamma_k*fa+gamma_k1*fb;
         end      
+        %Now add contribution from free stream
+        psi(i,j) = psi(i,j)+ym(i,j);
     end
 end
+
+figure
+hold on
+c = -1.75:0.25:1.75;
+contour(xm,ym,psi,c);
+plot(xs,ys);
+hold off
 
 figure
 c = -1.75:0.25:1.75;
