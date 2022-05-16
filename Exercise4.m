@@ -21,7 +21,7 @@ for i=1:nx
         xm(i,j)= xmin + (i-1)*(xmax-xmin)/(nx-1);
         ym(i,j)= ymin + (j-1)*(ymax-ymin)/(ny-1);
         for k=0:np-1
-            %k is loop over all panels
+           %k is loop over all panels
            xs(k+1) = cos(theta(k+1));
            ys(k+1) = sin(theta(k+1));
            xs(k+2) = cos(theta(k+2));
