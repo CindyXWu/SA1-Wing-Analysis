@@ -30,19 +30,26 @@ function lhsmat = build_lhs(xs,ys)
     %build A
     for i=1:np+1
         for j=1:np+1
+
             if i==1
                 if j==1
                     lhsmat(i,j)=1;
                 else
                     lhsmat(i,j)=0;
                 end
+
             elseif i==np+1
                 if j==np+1
                     lhsmat(i,j)=1;
                 else
-                    lhsmat(i,j)=1;
+                    lhsmat(i,j)=0;
                 end
+
             else
-                lhsmat(i,j)=psi(i+1,:)-psi(i,:);
-            
+                lhsmat(i,:)=psi(i+1,:)-psi(i,:);
+            end
+
+        end
+    end
+
 end
