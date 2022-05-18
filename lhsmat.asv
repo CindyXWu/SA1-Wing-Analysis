@@ -1,0 +1,36 @@
+function lhsmat = build_lhs(xs,ys)
+%xs is a vector of the edge of panel coordinates
+    np = length(xs)-1;
+    psip = zeros(np,np+1);
+    %2x2 matrix that stores fa and fb for the (j-1)th and jth panels
+    fafb = zeros(2);
+    lhsmat = zeros(np+1,np+1);
+    
+    %build psi matrix
+    for i=1:np
+        for j = 1:np+1
+        fafb(2,:) = panelinf(xs(j),ys(j),xs(j+1),ys(j+1),xs(i),ys(i));
+        fafb(1,:) = panelinf(xs(j-1),ys(j-1),xs(j),ys(j),xs(i),ys(i));
+
+            if j==1
+                psip(i,j)=fafb(2,1);
+            elseif j==np+1
+                psip(i,j)=fafb(1,2);
+            else
+                psip(i,j)=fafb(2,1)+fafb(1,2);
+            end
+
+        end
+    end
+
+    for i=1:np+1
+        for j=1:np+1
+            if i==1
+                if j==1
+                    lhsmat(i,j)=1;
+                else
+                    lhsmat(i,j)=0;
+                end
+            elseif i==
+            
+end
