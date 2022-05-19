@@ -10,7 +10,7 @@ function lhsmat = build_lhs(xs,ys)
 
     % j loops over the end points of the panels which produce the
     % streamfunctions
-    for i=1:np
+    for i = 1:np
         for j = 1:np+1
             if j==1
                 [fa fb] = panelinf(xs(j),ys(j),xs(j+1),ys(j+1),xs(i),ys(i));

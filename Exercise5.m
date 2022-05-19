@@ -1,9 +1,8 @@
-clc
 clear all
 
 np = 100;
-xs = zeros(np+1);
-ys = zeros(np+1);
+xs = zeros(np+1,1);
+ys = zeros(np+1,1);
 theta = (0:np)*2*pi/np;
 alpha = 0;
 
@@ -22,6 +21,7 @@ gam = A\b;
 theta_plot = theta/pi;
 figure
 plot(theta_plot,gam);
+axis([0 2 -2.5 2.5])
 
 %=======================================================
 % Produce plot of streamlines as well
@@ -55,7 +55,7 @@ for i=1:nx
            psi(i,j) = psi(i,j)+gam(k)*fa+gam(k+1)*fb;
         end      
         %Now add contribution from free stream
-        psi(i,j) = psi(i,j)+ym(i,j);
+        psi(i,j) = psi(i,j)+ym(i,j)*cos(alpha)-xm(i,j)*sin(alpha);
     end
 end
 
@@ -65,3 +65,17 @@ c = -1.75:0.25:1.75;
 contour(xm,ym,psi,c);
 plot(xs,ys);
 hold off
+
+%=============================================================
+% Total circulation = integral of gam over cylinder
+% I will just multiply each gam value by the panel length and sum them up
+
+% Panel length
+r = sqrt((xm(1)-xm(2))^2+(ym(1)-ym(2))^2);
+
+% Don't need to worry about np+1 index as it's 0 anyway
+Gamma = sum(gam*r);
+
+display(Gamma)
+
+
