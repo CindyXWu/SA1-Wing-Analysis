@@ -4,7 +4,7 @@ np = 100;
 xs = zeros(np+1,1);
 ys = zeros(np+1,1);
 theta = (0:np)*2*pi/np;
-alpha = pi/18;
+alpha = 0;
 
 % Fill xs,ys
 for k=1:np+1
