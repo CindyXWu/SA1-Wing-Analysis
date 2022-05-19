@@ -1,5 +1,0 @@
-clear
-clc
-close all
-A = build_lhs(xs,ys);
-b = build_rhs(

@@ -1,18 +1,15 @@
 function lhsmat = build_lhs(xs,ys)
-%xs is a vector of the edge of panel coordinates
+% xs is a vector of the edge of panel coordinates
     np = length(xs)-1;
     psip = zeros(np,np+1);
-    %2x2 matrix that stores fa and fb for the (j-1)th and jth panels
     lhsmat = zeros(np+1,np+1);
-    %Checked
     
-    
-    %build psi matrix
-    %i loops over the panel edges at which psi is evaluated. There are np
-    %such points
+    % Build psi matrix
+    % i loops over the panel edges at which psi is evaluated. There are np
+    % such points
 
-    %j loops over the end points of the panels which produce the
-    %streamfunctions
+    % j loops over the end points of the panels which produce the
+    % streamfunctions
     for i=1:np
         for j = 1:np+1
             if j==1
@@ -28,23 +25,21 @@ function lhsmat = build_lhs(xs,ys)
             end
         end
     end
-    %Checked
     
-    %build A
-    %A has a dimension of 100x100, ie np+1xnp+1
-    for j=1:np+1
-        for i=1:np+1
-            %prevent index exceeding range -> when i=np+1+1, it should go
-            %back to 1
-            i2=mod(i+1,np);
-            if i2==0
-               i2=np; 
-            end
-            i1=mod(i,np);
-            if i1==0
-               i1=np; 
-            end
-            lhsmat(i,j) = psip(i2,j) - psip(i1,j);
-        end
+    % Build A
+    % A has a dimension of 101x101, i.e. np+1xnp+1
+    lhsmat(1,1)=1;
+    lhsmat(np+1,np+1)=1;
+
+    for j=2:np+1
+        lhsmat(1,j)=0;
+    end
+
+    for j=1:np
+        lhsmat(np+1,j)=0;
+    end
+
+    for i=1:np-1
+        lhsmat(i+1,:)=psip(i+1,:)-psip(i,:);
     end
 end

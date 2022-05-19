@@ -1,22 +1,18 @@
 function rhsvec = build_rhs(xs,ys,alpha)
-    %xs is a vector of the edge of panel coordinates
+    % xs is a vector of the edge of panel coordinates
+    % This has np+1 entries as the first and last entries are repeated
+    % There are np unique coordinates
     np = length(xs)-1;
-%     psifs = zeros(np+1,np+1);
-    %b vector that stores 100X1 values
-    rhsvec = zeros(1,np+1);
-    for i=1:np+1
-        for j=1:np+1
-            i1=mod(i,np+1);
-            if i1==0
-               i1=np+1; 
-            end
-            j1=mod(i,np+1);
-            if j1==0
-               j1=np+1; 
-            end
-            psifs=ys(j)*cos(alpha)-xs(i)*sin(alpha);
-            psifs1=ys(j1)*cos(alpha)-xs(i1)*sin(alpha);
-            rhsvec(1,j) = psifs-psifs1;
-        end
+    % rhsvec: vector that stores 101X1 values
+    rhsvec = zeros(np+1,1);
+    % Equations 7 and 8 require 0 on RHS
+    rhsvec(1)=0;
+    rhsvec(np+1)=0;
+    % Equation 6 fills in the rest of the vector
+    for i=2:np
+        rhsvec(i) = ys(i)*cos(alpha)-xs(i)*sin(alpha)
+        -ys(i+1)*cos(alpha)+xs(i+1)*sin(alpha);
     end
 end
+
+
