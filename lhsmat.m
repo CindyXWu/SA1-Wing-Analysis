@@ -4,6 +4,8 @@ function lhsmat = build_lhs(xs,ys)
     psip = zeros(np,np+1);
     %2x2 matrix that stores fa and fb for the (j-1)th and jth panels
     lhsmat = zeros(np+1,np+1);
+    %Checked
+    
     
     %build psi matrix
     %i loops over the panel edges at which psi is evaluated. There are np
@@ -26,30 +28,19 @@ function lhsmat = build_lhs(xs,ys)
             end
         end
     end
+    %Checked
     
     %build A
+    %A has a dimension of 100x100, ie np+1xnp+1
     for i=1:np+1
         for j=1:np+1
-
-            if i==1
-                if j==1
-                    lhsmat(i,j)=1;
-                else
-                    lhsmat(i,j)=0;
-                end
-
-            elseif i==np+1
-                if j==np+1
-                    lhsmat(i,j)=1;
-                else
-                    lhsmat(i,j)=0;
-                end
-
-            else
-                lhsmat(i,:)=psi(i+1,:)-psi(i,:);
+            %prevent index exceeding range -> when i=np+1+1, it should go
+            %back to 1
+            i1=mod(i,np+1);
+            if i1==0
+               i1=np+1; 
             end
-
+            lhsmat(i1,j)=psip(i1+1,j)-psip(i1,j);
         end
     end
-
 end
