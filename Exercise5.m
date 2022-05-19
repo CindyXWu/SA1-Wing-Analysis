@@ -1,5 +1,5 @@
 clc
 
-A = lhsmat(xs,ys);
-b = rhsvec(xs,ys,alpha);
+A = build_lhs(xs,ys);
+b = build_rhs(xs,ys,alpha);
 gam = A/b;
