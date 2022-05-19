@@ -36,15 +36,11 @@ function lhsmat = build_lhs(xs,ys)
         for i=1:np+1
             %prevent index exceeding range -> when i=np+1+1, it should go
             %back to 1
-            i2=mod(i+1,np);
-            if i2==0
-               i2=np; 
-            end
-            i1=mod(i,np);
+            i1=mod(i,np+1);
             if i1==0
-               i1=np; 
+               i1=np+1; 
             end
-            lhsmat(i,j) = psip(i2,j) - psip(i1,j);
+            lhsmat(i,j) = psip(i1+1,j) - psip(i1,j);
         end
     end
 end
