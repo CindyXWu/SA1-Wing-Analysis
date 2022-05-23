@@ -40,9 +40,9 @@ ue = ue+x*gradient;
 % i loops through distance along plate x/L
 for k=1:3
     for i=2:n
-        f(i,k) = f(i-1,k)+(ue(i))^(-6)*ueintbit(x(i-1),ue(i-1),x(i),ue(i));
+        f(i,k) = f(i-1,k)+ueintbit(x(i-1),ue(i-1),x(i),ue(i));
     end
-    theta(:,k) = sqrt( (0.45/Re(k)) * f(:,k) );
+    theta(:,k) = sqrt( (0.45/Re(k))*((ue(i)).^(-6)).* f(:,k) );
     m(:,k) = -Re(k)*theta(:,k).^2*gradient;
     
     for i=1:n
@@ -58,9 +58,10 @@ H = arrayfun(@thwaites_lookup,m);
 He = arrayfun(@laminar_He,H);
 
 % Find transition and separation point
-laminar = true;
+
 separation_index = zeros(3,1);
 for k=1:3
+    laminar = true;
     for i=1:n
         % Separation
         if m(i,k) >= 0.09
@@ -73,7 +74,7 @@ for k=1:3
         % Transition
         if log(Re_theta(i,k)) >= 18.4*He(i,k)-21.74
             laminar = false;
-%             disp([x(i) Re_theta(i,k)/1000])
+            disp([x(i) Re_theta(i,k)/1000])
             transition_loc(k) = x(i);
             transition_Re(k) = Re_theta(i,k);
             break

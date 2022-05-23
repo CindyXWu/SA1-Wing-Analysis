@@ -2,6 +2,7 @@ clc
 clear all
 
 n = 101;
+
 % In all following code, we work with the 1st dimension or column dimension
 % as n (linspace creates row vectors, so transpose)
 x = linspace(0,1,n)';
@@ -39,9 +40,9 @@ end
 for j=1:3
     for k=1:3
         for i=2:n
-            f(i,j,k) = f(i-1,j,k)+(ue(i,j))^(-6)*ueintbit(x(i-1),ue(i-1,j),x(i),ue(i,j));
+            f(i,j,k) = f(i-1,j,k)+ ueintbit(x(i-1),ue(i-1,j),x(i),ue(i,j));
         end
-        theta(:,j,k) = sqrt( (0.45/Re(k)) * f(:,j,k) );
+        theta(:,j,k) = sqrt( (0.45/Re(k))*((ue(:,j)).^(-6)).*f(:,j,k) );
         m(:,j,k) = -Re(k)*theta(:,j,k).^2*gradients(j);
         
         for i=1:n
@@ -50,6 +51,27 @@ for j=1:3
     end
 end
 
+% x = linspace(0,1,n)';
+% duedxtest = -0.1;
+% ftest = zeros(n,1);
+% ue0 = 1;
+% uetest = ue0+duedxtest*x;
+% Retest = 5e6;
+% thetatest = zeros(n,1);
+% mtest = zeros(n,1);
+% Re_thetatest = zeros(n,1);
+% 
+% 
+% for i=2:n
+%     ftest(i) = ftest(i-1)+ueintbit(x(i-1),uetest(i-1),x(i),uetest(i));
+% end
+% thetatest = sqrt( (0.45/Retest)*(((uetest).^(-6)).*ftest ));
+% mtest = -Retest*thetatest.^2*duedxtest;
+% 
+% for i=1:n
+%     Re_thetatest(i) = Retest*uetest(i)*thetatest(i);
+% end
+
 % Calculate H
 H = arrayfun(@thwaites_lookup,m);
 
@@ -57,11 +79,12 @@ H = arrayfun(@thwaites_lookup,m);
 He = arrayfun(@laminar_He,H);
 
 % Find transition point
-laminar = true;
 for j=1:3
     for k=1:3
+        laminar = true;
         for i=1:n
             if log(Re_theta(i,j,k)) >= 18.4*He(i,j,k)-21.74
+                disp(i)
                 laminar = false;
                 disp([x(i) Re_theta(i,j,k)/1000])
                 transition_loc(j,k) = x(i);
@@ -71,6 +94,18 @@ for j=1:3
         end
     end
 end
+
+% laminar = true;
+% for i=1:n
+%     if log(Re_thetatest(i)) >= 18.4*He(i)-21.74
+%         disp(i)
+%         laminar = false;
+%         disp([x(i) Re_thetatest(i)/1000])
+%         transition_loc = x(i);
+%         transition_Re = Re_thetatest(i);
+%         break
+%     end
+% end
 
 disp(transition_loc)
 disp(transition_Re)
