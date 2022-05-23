@@ -39,7 +39,7 @@ end
 for j=1:3
     for k=1:3
         for i=2:n
-            f(i,j,k) = f(i-1,j,k)+ue(i,j)^(-6)*ueintbit(x(i-1),ue(i-1,j),x(i),ue(i,j));
+            f(i,j,k) = f(i-1,j,k)+(ue(i,j))^(-6)*ueintbit(x(i-1),ue(i-1,j),x(i),ue(i,j));
         end
         theta(:,j,k) = sqrt( (0.45/Re(k)) * f(:,j,k) );
         m(:,j,k) = -Re(k)*theta(:,j,k).^2*gradients(j);
