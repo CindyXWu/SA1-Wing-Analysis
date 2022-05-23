@@ -11,6 +11,7 @@ theta = sqrt((0.45/Re)*f);
 blasius = 0.664*sqrt(x)/(Re^(0.5));
 f_int = sum(f);
 
+disp(theta)
 figure
 hold on
 plot(x, theta, 'r--');
