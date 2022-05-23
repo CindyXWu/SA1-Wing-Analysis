@@ -8,6 +8,7 @@ Re = [5*10^6, 10^7, 2*10^7];
 f = zeros(101,3,3);
 theta = zeros(101,3,3);
 m = zeros(101,3,3);
+% Local Reynolds number based on momentum thickness
 Re_theta = zeros(101,3,3);
 
 % Fill ue
@@ -45,8 +46,17 @@ H = arrayfun(thwaites_lookup,m);
 % Calculate He
 He = arrayfun(laminar_He,m);
 
-blasius = 0.664*sqrt(x)/(Re^(0.5));
-f_int = sum(f);
+for j=1:3
+    for k=1:3
+        for i=1:101
+            if log(Re_theta(i,j,k)) >= 18.4*He(i,j,k)
+                laminar = false;
+                disp([x(i) Re_theta_1000])
+                break
+            end
+        end
+    end
+end
 
 figure
 hold on
