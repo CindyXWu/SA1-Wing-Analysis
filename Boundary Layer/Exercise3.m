@@ -17,14 +17,13 @@ f = zeros(n,3);
 m = zeros(n,3);
 % Local Reynolds number based on momentum thickness
 Re_theta = zeros(n,3);
-% Final 3*3 matrices to output transition values
-transition_loc = zeros(3,1);
-transition_Re = zeros(3,1);
-separation_Re = zeros(3,1);
-% Location of turbulent transition
+
+% Location of natural transition
 int = zeros(3,1);
-% Location of laminar transition
+transition_Re = zeros(3,1);
+% Location of laminar separation
 ils = zeros(3,1);
+separation_Re = zeros(3,1);
 
 % Fill ue
 % Each column of ue is for a different value of gradient wrt dimensionless
@@ -42,12 +41,9 @@ for k=1:3
     for i=2:n
         f(i,k) = f(i-1,k)+ueintbit(x(i-1),ue(i-1),x(i),ue(i));
     end
-    theta(:,k) = sqrt( (0.45/Re(k))*((ue(i)).^(-6)).* f(:,k) );
-    m(:,k) = -Re(k)*theta(:,k).^2*gradient;
-    
-    for i=1:n
-        Re_theta(i,k) = Re(k)*ue(i)*theta(i,k);
-    end
+    theta(:,k) = sqrt((0.45/Re(k))*(ue.^(-6)).*f(:,k));
+    m(:,k) = -Re(k)*theta(:,k).^2*gradient; 
+    Re_theta(:,k) = Re(k)*ue.*theta(:,k);
 end
 
 
@@ -63,34 +59,27 @@ separation_index = zeros(3,1);
 for k=1:3
     laminar = true;
     for i=1:n
-        % Separation
-        if m(i,k) >= 0.09
-            laminar = false;
-            separation_index(k)=i;
-            break
-        end
-    end
-    for i=1:n
         % Transition
         if log(Re_theta(i,k)) >= 18.4*He(i,k)-21.74
             laminar = false;
             disp([x(i) Re_theta(i,k)/1000])
-            transition_loc(k) = x(i);
+            int(k) = i;
             transition_Re(k) = Re_theta(i,k);
+            break
+        elseif m(i,k) >= 0.09
+            laminar = false;
+            ils(k) = i
+            separation_Re(k) = Re_theta(i,k);
             break
         end
     end
-    % Does separation or transition occur first?
-    if separation_index(k) < transition_loc(k)
-        ils(k) = x(separation_index(k));
-        separation_Re = Re(separation_index(k),k);
-    else
-        int(k) = x(separation_index(k));
-    end
 end
 
-
-disp([transition_loc])
-disp([transition_Re])
-disp([int,ils])
-disp([separation_Re])
+for i=1:3
+    if int(i) ~= 0
+        disp(['Natural transition at x/L value ' num2str(x(int(i))) ' with Re_theta ' num2str(transition_Re(i))])
+    end
+    if ils(i) ~= 0
+        disp(['Laminar separation at x/L value ' num2str(x(ils(i))) ' with Re_theta ' num2str(separation_Re(i))])
+    end 
+end
