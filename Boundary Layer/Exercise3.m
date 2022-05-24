@@ -2,16 +2,12 @@ clc
 clear all
 
 n = 101;
-% In all following code, we work with the 1st dimension or column dimension
-% as n (linspace creates row vectors, so transpose)
 x = linspace(0,1,n)';
-% 101x3 because each column is for a different gradient
 ue = ones(n,1);
 gradient = -0.25;
 Re = [10^3, 10^4, 10^5];
 % First dimension is different x/L values
-% Second dimension is different gradients
-% Third dimension is different Re values
+% Second dimension is different Re values
 theta = zeros(n,3);
 f = zeros(n,3);
 m = zeros(n,3);
@@ -25,16 +21,11 @@ transition_Re = zeros(3,1);
 ils = zeros(3,1);
 separation_Re = zeros(3,1);
 
-% Fill ue
-% Each column of ue is for a different value of gradient wrt dimensionless
-% distance
-
 % Add constant offset of 1 to ue since ue/U=1 when x/L=0
 ue = ue+x*gradient;
 
 % Calculate dimensionless momentum thickness values
-% There are 9 such cases, for 3 different ue values and 3 different
-% (length-based) Re values
+% There are 3 such cases, for 3 different (length-based) Re values
 % k loops through Re
 % i loops through distance along plate x/L
 for k=1:3
