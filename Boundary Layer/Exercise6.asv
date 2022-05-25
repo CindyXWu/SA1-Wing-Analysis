@@ -1,14 +1,14 @@
 clc
 clear all
 global Re duedx ue0
-Re_list=[1e6 1e7];
+Re_list=[1e4 1e5];
 stylelist = ['g','k'];
-for j=1:2
+for j=1:3
     n = 101;
     x = linspace(0,1,n)';
     ue = ones(n,1);
     
-    duedx = 0;
+    duedx = -0.25;
     Re = Re_list(j);
     % First dimension is different x/L values
     theta = zeros(n,1);
@@ -45,6 +45,7 @@ for j=1:2
     % Calculate He
     He = arrayfun(@laminar_He,H);
     He(1) = 1.57258;
+    print(He)
     % Find transition and separation point
 
     separation_index = zeros(3,1);

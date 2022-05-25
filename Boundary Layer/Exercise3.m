@@ -5,7 +5,7 @@ n = 101;
 x = linspace(0,1,n)';
 ue = ones(n,1);
 gradient = -0.25;
-Re = [10^3, 10^4, 10^5];
+Re = [8.935*10^5, 8.9355*10^5, 8.936*10^6];
 % First dimension is different x/L values
 % Second dimension is different Re values
 theta = zeros(n,3);
