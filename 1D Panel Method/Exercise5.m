@@ -1,10 +1,12 @@
 clear all
+close all
+clear 
 
 np = 100;
 xs = zeros(np+1,1);
 ys = zeros(np+1,1);
 theta = (0:np)*2*pi/np;
-alpha = 0;
+alpha = pi/18;
 
 % Fill xs,ys
 for k=1:np+1
@@ -71,10 +73,10 @@ hold off
 % I will just multiply each gam value by the panel length and sum them up
 
 % Panel length
-r = sqrt((xm(1)-xm(2))^2+(ym(1)-ym(2))^2);
-
+r = sqrt((xs(1)-xs(2))^2+(ys(1)-ys(2))^2);
+xgrid = 0:r:np*r;
 % Don't need to worry about np+1 index as it's 0 anyway
-Gamma = sum(gam*r);
+Gamma = trapz(xgrid,gam);
 
 display(Gamma)
 
