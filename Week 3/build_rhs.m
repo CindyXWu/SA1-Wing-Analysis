@@ -9,9 +9,12 @@ function rhsvec = build_rhs(xs,ys,alpha)
     % Equations 7 and 8 require 0 on RHS
     % Equation 6 fills in the rest of the vector
     for i=1:np
-        psivec(i) = ys(i)*cos(alpha)-xs(i)*sin(alpha)
+        psivec(i) = ys(i)*cos(alpha)-xs(i)*sin(alpha);
     end
     rhsvec(2:end-1) = psivec(1:(end-1))-psivec(2:end);
+    %Kutta condition
+    rhsvec(1,1) = 0;
+    rhsvec(np+1,1) = 0;
 end
 
 

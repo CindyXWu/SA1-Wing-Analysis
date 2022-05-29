@@ -23,11 +23,26 @@ function lhsmat = build_lhs(xs,ys)
     
     % Build A
     % A has a dimension of 101x101, i.e. np+1xnp+1
-    lhsmat(1,1)=1;
+%     lhsmat(1,1)=1;
     % multiply psip by gamma for zero incidence (theoretical values) to see
     % if it gives constant psi values on RHS
+    % Excluding top and bottom rows, for later modification
     for i=1:np-1
         lhsmat(i+1,:)=psip(i+1,:)-psip(i,:);
     end
-    lhsmat(np+1,np+1)=1;
+%     lhsmat(np+1,np+1)=1;
+    
+    % First row
+    lhsmat(1,1) = 1;
+    lhsmat(1,2) = -1;
+    lhsmat(1,3) = 0.5;
+    lhsmat(1,np-1)= -0.5;
+    lhsmat(1,np)= 1;
+
+    % np+1 row
+    lhsmat(np+1,2) = 1;
+    lhsmat(np+1,3) = -0.5;
+    lhsmat(np+1,np-1)= 0.5;
+    lhsmat(np+1,np)= -1;
+    lhsmat(np+1,np+1) = 1;
 end
