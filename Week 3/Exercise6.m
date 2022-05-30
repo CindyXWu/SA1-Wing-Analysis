@@ -14,9 +14,9 @@ for j=1:3
     duedx = -0.25;
     Re = Re_list(j);
     % First dimension is different x/L values
-%     theta = zeros(n,1);
+    theta = zeros(n,1);
     f = zeros(n,1);
-%     m = zeros(n,1);
+    m = zeros(n,1);
     % Local Reynolds number based on momentum thickness
     Re_theta = zeros(n,1);
     delta = zeros(n,1);

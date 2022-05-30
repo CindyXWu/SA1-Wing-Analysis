@@ -27,18 +27,18 @@ theta9 = 0.023*x.*(Re.*x).^(-1/6);
 % Vector of He values
 He = thickhist(:,2)./thickhist(:,1);
 
-% figure
-% hold on
-% plot(x, thickhist(:,1), 'r--','Displayname','PDE solution momentum thickness');
-% plot(x, thickhist(:,2),'Displayname','PDE solution energy thickness');
-% legend('Location','northwest')
-% hold off
-% title('Exercise 5 thickness plots Re=10^7, gradient=-0.5')
-% xlabel('x/L')
-% ylabel('thickness/L')
-
 figure
-plot(x,He, 'Displayname','He values')
-title('Exercise 5 He plot for separation')
+hold on
+plot(x, thickhist(:,1), 'r--','Displayname','PDE solution momentum thickness');
+plot(x, thickhist(:,2),'Displayname','PDE solution energy thickness');
+legend('Location','northwest')
+hold off
+title('Exercise 5 thickness plots Re=10^7, gradient=-0.5')
 xlabel('x/L')
 ylabel('thickness/L')
+
+% figure
+% plot(x,He, 'Displayname','He values')
+% title('Exercise 5 He plot for separation')
+% xlabel('x/L')
+% ylabel('thickness/L')
