@@ -10,9 +10,9 @@ function [cl cd] = forces(circ,cp,delstarl,thetal,delstaru,thetau)
     % thetau - upper surface momentum thickness array
     
     % Evaluate theta_inf
-    theta_te = thetal(:) + thetau(:);
-    delstar_te = delstarl(:) + delstaru(:);
-    ue_te = sqrt(1-cp(:));
+    theta_te = thetal(end) + thetau(end);
+    delstar_te = delstarl(end) + delstaru(end);
+    ue_te = sqrt(1-cp(end));
     H_te = delstar_te/theta_te;
     theta_inf = theta_te*(ue_te)^((H_te+5)/2);
     

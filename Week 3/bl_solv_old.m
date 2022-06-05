@@ -107,6 +107,7 @@ function [int ils itr its delstar theta] = bl_solv(x,cp)
     while(its == 0 & i <= 101)
         [delx thickhist] = ode45(@thickdash, [0,x(i)-x(i-1)], thick0);
         thick0 = thickhist(end,:);
+        % Estimate of panel velocity gradient - changing over x
         duedx = (ue(i)-ue(i-1))/(x_panel(i) - x_panel(i-1));
         % m_i = -Re*(thick0(1))^2*duedx;
         % Fill in theta array for plotting later

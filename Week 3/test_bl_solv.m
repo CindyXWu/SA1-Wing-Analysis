@@ -23,5 +23,3 @@ plot(x,blthet,'-',x,theta,'x')
 xlabel('x')
 ylabel('\theta')
 legend('Blasius','blsolv')
-
-

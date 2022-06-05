@@ -54,8 +54,8 @@ function [int ils itr its delstar theta] = bl_solv(x,cp)
         % After initialising the integral iteration process, we test for
         % natural transition and/or separation
         if log(Re_theta) >= 18.4*He-21.74 % Empirical
-        laminar = false;
-        int = i;  
+            laminar = false;
+            int = i;  
         % Test for laminar seperation
         elseif m >= 0.09
             laminar = false;
@@ -66,15 +66,16 @@ function [int ils itr its delstar theta] = bl_solv(x,cp)
         i = i + 1;
     end
     %=================================================================
-    %% Turbulent Flow
+    %% Turbulent Flow for transition or separation
     % Update the delstar array once it leaves laminar regime
+    % He below should be that at laminar separation - 1.51509
     delta_pl = He*theta(i-1); % pl means post-laminar, which take the most updated index i results from the previous while loop
     % Under no turbulent separation condition
     while its==0 && i < np+1
         % Calcuate thick vector (theta and delta)
         thick0(1) = theta(i-1);
         thick0(2) = delta_pl;
-        ue0 = ue(i);
+        ue0 = ue(i-1);
         duedx = (ue(i+1)-ue(i))/(x_panel(i+1)-x_panel(i));
         [delx thickhist] = ode45(@thickdash,[0,x_panel(i+1)-x_panel(i)],thick0);
         
