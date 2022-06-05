@@ -1,16 +1,16 @@
 %  Zero pressure gradient b-l; bl_solv and Blasius
 clc
-clear global
 clear all
+clear global
 close
 global Re
 
 % Re = 2500;
-Re = 1e9;
+Re = 1e7;
 
 n = 100;
-x = linspace(1/n,1,n)';
-cp = zeros(1,n)';
+x = linspace(1/n,1,n);
+cp = zeros(1,n);
 
 [int ils itr its delstar theta] = bl_solv ( x, cp );
 blthet = 0.664 * sqrt(x/Re);

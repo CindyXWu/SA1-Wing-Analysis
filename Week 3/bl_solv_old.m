@@ -4,22 +4,22 @@ function [int ils itr its delstar theta] = bl_solv(x,cp)
     global Re duedx ue0
     % Re_list=[1e4 1e5 1e6];
     % Redefine the number of panels
-    np = length(x)-1;
+    np = length(x)+1;
     
     % Initialise variables at each numbered point in Fig.8
-    ue(1) = 0;
-    ue(2:np+1) = (1-cp(1:np)).^0.5;
-    x_panel(1) = 0;
-    x_panel(2:np+1) = x(1:np);
+    ue(1,1) = 0;
+    ue(2:np,1) = (1-cp(1:np-1,1)).^0.5;
+    x_panel(1,1) = 0;
+    x_panel(2:np,1) = x(1:np-1,1);
     
 %     delstar(1:np) = 0;
 %     He = 0;
-    duedx = zeros(np+1,1);
+    duedx = zeros(np,1);
     
     % Initialise integral, theta and m
-    theta = zeros(np+1,1);
-    f = zeros(np+1,1);
-    m = zeros(np+1,1);
+    theta = zeros(np,1);
+    f = zeros(np,1);
+    m = zeros(np,1);
     
     % Initialise indices tracker
     % Location of laminar transition
@@ -34,11 +34,11 @@ function [int ils itr its delstar theta] = bl_solv(x,cp)
     % Location of turbulent separation
     its = 0;
     turbulent_separation_Re = 0;
-
+    delstar = zeros(np+1,1);
 
     % Calculate dimensionless momentum thickness values
     % i loops through distance along plate x/L
-    for i=2:np+1
+    for i=2:np
         duedx(i) = (ue(i)-ue(i-1))/(x_panel(i)-x_panel(i-1));
         f(i) = f(i-1) + ueintbit(x_panel(i-1),ue(i-1),x_panel(i),ue(i));
     end
@@ -69,7 +69,7 @@ function [int ils itr its delstar theta] = bl_solv(x,cp)
             % If laminar separation detected, He fixed at its separation
             % value (step ii)
             He(i:end)=1.51509;
-%             delta = He.*theta;
+            delta = He.*theta;
             laminar = false;
             ils = i;
 %             separation_Re = Re_theta(i);
@@ -104,10 +104,10 @@ function [int ils itr its delstar theta] = bl_solv(x,cp)
 
     % Calculations for non-laminar regions: while loop proceeds as long as
     % its = 0 and position index < max value
-    while(its == 0 & i < 101)
+    while(its == 0 & i <= 101)
         [delx thickhist] = ode45(@thickdash, [0,x(i)-x(i-1)], thick0);
         thick0 = thickhist(end,:);
-        duedx = (ue(i+1)-ue(i))/(x_panel(i+1) - x_panel(i));
+        duedx = (ue(i)-ue(i-1))/(x_panel(i) - x_panel(i-1));
         % m_i = -Re*(thick0(1))^2*duedx;
         % Fill in theta array for plotting later
         theta(i) = thick0(1);
@@ -135,7 +135,7 @@ function [int ils itr its delstar theta] = bl_solv(x,cp)
             % H unchanged from separation value
             H(its:end) = thwaites_lookup(m(its));
             % Populate He with constant values (separated)
-            He(its:end) = He_i
+            He(its:end) = He_i;
         end
         ue0 = ue(i);
         i = i+1;
