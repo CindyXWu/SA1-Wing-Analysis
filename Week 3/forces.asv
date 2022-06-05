@@ -10,11 +10,7 @@ function [cl cd] = forces(circ,cp,delstarl,thetal,delstaru,thetau)
     % thetau - upper surface momentum thickness array
     
     % Evaluate theta_inf
-    theta_te = thetal(:) + thetau(:);
-    delstar_te = delstarl(:) + delstaru(:);
-    ue_te = sqrt(1-cp(:));
-    H_te = delstar_te/theta_te;
-    theta_inf = theta_te*(ue_te)^((H_te+5)/2);
+    theta_inf = theta_te*(ue_te)^()
     
     % Calculate cl and cd (lift and drag coefficients)
     cl = -2*circ;
