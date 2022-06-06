@@ -48,7 +48,7 @@ function [int ils itr its delstar theta] = bl_solv(x,cp)
     while laminar && i < np
         i = i + 1;
         % Update velocity gradient
-        duedx = (ue(i)-ue(i-0))/(x(i)-x(i-1));
+        duedx = (ue(i)-ue(i-1))/(x(i)-x(i-1));
         f = f + ueintbit(x(i-1), ue(i-1), x(i), ue(i));
         theta(i) =  sqrt((0.45/Re)*(ue(i)^(-6))*f);
         Re_theta = Re*ue(i)*theta(i);
