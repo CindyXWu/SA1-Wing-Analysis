@@ -5,7 +5,7 @@
 %
 clc
 clear all
-close
+% close all
 
 global Re
 
@@ -33,11 +33,17 @@ nphr = 5*np;
 A = build_lhs ( xs, ys );
 Am1 = inv(A);
 
+clswp(1:length(alpha)) = 0;
+cdswp(1:length(alpha)) = 0;
+lovdswp(1:length(alpha)) = 0;
+
 %  Loop over alpha values
 for nalpha = 1:length(alpha)
 
 %    rhs of equations
   alfrad = pi * alpha(nalpha)/180;
+  alpha_array(nalpha) = alfrad;
+  
   b = build_rhs ( xs, ys, alfrad );
 
 %    solve for surface vortex sheet strength
@@ -96,8 +102,6 @@ for nalpha = 1:length(alpha)
 
 %    lift and drag coefficients
   [Cl Cd] = forces ( circ, cp, delstarl, thetal, delstaru, thetau );
-
-%    copy Cl and Cd into arrays for alpha sweep plots
 
   clswp(nalpha) = Cl;
   cdswp(nalpha) = Cd;
@@ -172,3 +176,20 @@ end
 
 fname = ['Data' caseref '.mat'];
 save ( fname, 'xs', 'ys', 'alpha', 'clswp', 'cdswp', 'lovdswp' )
+
+figure
+plot(alpha, clswp, 'Displayname', 'Cl')
+xlabel('Alpha')
+ylabel('Cl')
+
+figure
+plot(clswp, cdswp, 'Displayname', 'Cd')
+xlabel('Cl')
+ylabel('Cd')
+
+figure
+plot(alpha, lovdswp, 'Displayname', 'Cl/Cd')
+legend
+xlabel('Alpha')
+ylabel('Cl/Cd')
+

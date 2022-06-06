@@ -8,9 +8,9 @@ function [int ils itr its delstar theta] = bl_solv(x,cp)
     
     % Initialise variables at each numbered point in Fig.8
     ue(1) = 0;
-    ue(2:np+1) = (1-cp(1:np)).^0.5;
+    ue(2:np+1) = (1-cp).^0.5;
     x_panel(1) = 0;
-    x_panel(2:np+1) = x(1:np);
+    x_panel(2:np+1) = x;
     theta(1:np) = 0;
     delstar(1:np) = 0;
     He = 0;
@@ -35,10 +35,11 @@ function [int ils itr its delstar theta] = bl_solv(x,cp)
     laminar = true;
     
     % Location index
-    i = 1;
+    i = 0;
     
     % Start iteration process
-    while laminar && i < np+1
+    while laminar && i < np
+        i = i + 1;
         % Update velocity gradient
         duedx = (ue(i+1)-ue(i))/(x_panel(i+1)-x_panel(i));
         f = f + ueintbit(x_panel(i), ue(i), x_panel(i+1), ue(i+1));
@@ -63,22 +64,22 @@ function [int ils itr its delstar theta] = bl_solv(x,cp)
             % Set He to laminar separation value
             He = 1.51509;
         end
-        i = i + 1;
     end
     %=================================================================
+    delta_pl = He*theta(i); % pl means post-laminar, which take the most updated index i results from the previous while loop
+    % Calcuate thick vector (theta and delta)
+    thick0(1) = theta(i);
+    thick0(2) = delta_pl;
+    ue0 = ue(i);
     %% Turbulent Flow for transition or separation
     % Update the delstar array once it leaves laminar regime
     % He below should be that at laminar separation - 1.51509
-    delta_pl = He*theta(i-1); % pl means post-laminar, which take the most updated index i results from the previous while loop
+   
     % Under no turbulent separation condition
-    while its==0 && i < np+1
-        % Calcuate thick vector (theta and delta)
-        thick0(1) = theta(i-1);
-        thick0(2) = delta_pl;
-        ue0 = ue(i-1);
+    while its==0 && i < np
         duedx = (ue(i+1)-ue(i))/(x_panel(i+1)-x_panel(i));
         [delx thickhist] = ode45(@thickdash,[0,x_panel(i+1)-x_panel(i)],thick0);
-        
+        thick0 = thickhist(end,:)
         % For testing of turbulent reattachment, we extract information
         % from several variables from the 'beginning'
         theta(i) = thickhist(end,1);
@@ -101,6 +102,7 @@ function [int ils itr its delstar theta] = bl_solv(x,cp)
                 delstar(k) = H*theta(k);
             end
         end
+        ue0 = ue(i);
         i = i + 1;
     end
 end
