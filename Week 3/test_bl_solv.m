@@ -1,12 +1,10 @@
 %  Zero pressure gradient b-l; bl_solv and Blasius
-clc
 clear all
 clear global
-close
 global Re
 
 % Re = 2500;
-Re = 1e7;
+Re = 1e4;
 
 n = 100;
 x = linspace(1/n,1,n);

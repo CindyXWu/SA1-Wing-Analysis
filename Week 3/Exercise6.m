@@ -4,9 +4,9 @@ clear all
 close
 
 global Re duedx ue0
-Re_list=[1e4 1e5 1e6];
+Re_list=[1e4 1e5 1e6 1e7];
 stylelist = ['g','k','r--'];
-for j=1:3
+for j=1:4
     n = 101;
     x = linspace(0,1,n)';
     ue = ones(n,1);
@@ -156,19 +156,19 @@ for j=1:3
         end
     end
 
-%     hold on
-%     plot(x, theta,stylelist(j),'Displayname',strcat('Re=',num2str(Re)));
-%     legend('Location','northwest')
-%     xlabel('x/L')
-%     title('Exercise 6 momentum thickness plot gradient=0')
-%     ylabel('theta/L')
-    
     hold on
-    plot(x, He, stylelist(j),'Displayname',strcat('Re=',num2str(Re)));
-    xlabel('x/L')
-    title('Exercise 6 He plot gradient=0')
-    ylabel('He')
+    plot(x, theta,stylelist(j),'Displayname',strcat('Re=',num2str(Re)));
     legend('Location','northwest')
+    xlabel('x/L')
+    title('Exercise 6 momentum thickness plot gradient=0')
+    ylabel('theta/L')
+    
+%     hold on
+%     plot(x, He, stylelist(j),'Displayname',strcat('Re=',num2str(Re)));
+%     xlabel('x/L')
+%     title('Exercise 6 He plot gradient=0')
+%     ylabel('He')
+%     legend('Location','northwest')
     
     if int ~= 0
         disp(['Natural transition at x/L value ' num2str(x(int)) ' with Re_theta ' num2str(transition_Re) ' and ReL=' num2str(Re)])
